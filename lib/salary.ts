@@ -1,3 +1,9 @@
+import incomeTaxJson from "./income-tax.json";
+
+type IncomeTax = typeof incomeTaxJson;
+
+const incomeTax: IncomeTax = incomeTaxJson;
+
 const salaryList = [
   { start: 10_000_000, end: 200_000_000, delta: 1_000_000 },
   { start: 220_000_000, end: 500_000_000, delta: 20_000_000 },
@@ -20,8 +26,9 @@ export class Salary {
   RATE = {
     국민연금: 4.5,
     건강보험: 3.545,
-    장기요양보험: 12.81,
+    장기요양보험: 12.81, // 건강보험 기준
     고용보험: 0.9,
+    지방세: 10, // 소득세 기준
   };
 
   constructor(salary: number) {
@@ -32,7 +39,7 @@ export class Salary {
   numFormat(number: number) {
     return new Intl.NumberFormat().format(number);
   }
-  calculate(number: number, rate: number) {
+  calculate(number: number, rate: number = 100) {
     return Math.floor((number * rate) / 1000) * 10;
   }
 
@@ -54,6 +61,46 @@ export class Salary {
   get 고용보험() {
     return this.calculate(this.monthly, this.RATE.고용보험);
   }
+  get 소득세() {
+    if (this.monthly > 10_000_000) {
+      const getCb = (monthly: number) => {
+        if (monthly > 87_000_000) {
+          return 31_034_600 + (monthly - 87_000_000) * 0.45;
+        }
+        if (monthly > 45_000_000 && monthly <= 87_000_000) {
+          return 13_394_600 + (monthly - 45_000_000) * 0.42;
+        }
+        if (monthly > 30_000_000 && monthly <= 45_000_000) {
+          return 7_394_600 + (monthly - 30_000_000) * 0.4;
+        }
+        if (monthly > 28_000_000 && monthly <= 30_000_000) {
+          return 6_610_600 + (monthly - 28_000_000) * 0.98 * 0.4;
+        }
+        if (monthly > 14_000_000 && monthly <= 28_000_000) {
+          return 1_397_000 + (monthly - 14_000_000) * 0.98 * 0.38;
+        }
+        return 25_000 + (monthly - 10_000_000) * 0.98 * 0.35;
+      };
+
+      return incomeTax
+        .at(-1)
+        ?.slice(2)
+        .map((e) => this.calculate(e + getCb(this.monthly)));
+    }
+    if (this.monthly === 10_000_000) {
+      return incomeTax.at(-1)?.slice(2).map(e => this.calculate(e));
+    }
+    for (let i = 0; i < incomeTax.length - 1; i++) {
+      const stdMonthly = (incomeTax[i][0] as number) * 1000;
+      if (this.monthly >= stdMonthly) {
+        return incomeTax[i].slice(2).map(e => this.calculate(e));
+      }
+    }
+    return [];
+  }
+  get 지방세() {
+    return this.소득세?.map((e) => this.calculate(e, this.RATE.지방세));
+  }
 }
 
 export function getSalaries() {
@@ -67,6 +114,8 @@ export function getSalaries() {
       건강보험: s.numFormat(s.건강보험),
       장기요양보험: s.numFormat(s.장기요양보험),
       고용보험: s.numFormat(s.고용보험),
+      소득세: s.소득세?.map((e) => s.numFormat(e)),
+      지방세: s.지방세?.map((e) => s.numFormat(e)),
     };
   });
 }
