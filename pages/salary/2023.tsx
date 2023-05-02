@@ -1,14 +1,41 @@
 import { getSalaries, Salary } from "@/lib/salary";
 import { GetStaticProps } from "next";
+import React, { useEffect, useMemo, useState } from "react";
 
 interface Props {
   salaries: Salary[];
 }
 
 export default function Salary2023({ salaries }: Props) {
+  const [familyCount, setFamilyCount] = useState(1);
+
+  const changeFamilyCount: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const value = Number(e.target.value);
+    setFamilyCount(value);
+  };
+
+  const familyCountIndex = useMemo(() => {
+    return familyCount - 1;
+  }, [familyCount]);
+
   return (
     <div className="p-8 bg-gray-200 shadow-lg rounded-md">
-      <h1 className="text-3xl font-bold">2023 실수령액 💰</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">2023 실수령액 💰</h1>
+
+        <div className="space-x-2">
+          <label htmlFor="family-count">부양가족 (본인포함)</label>
+          <input
+            id="family-count"
+            className="pl-2 w-16"
+            type="number"
+            min={1}
+            max={11}
+            value={familyCount}
+            onChange={changeFamilyCount}
+          />
+        </div>
+      </div>
 
       <table className="mt-10">
         <colgroup>
@@ -68,10 +95,10 @@ export default function Salary2023({ salaries }: Props) {
                 <span>{salary.월급}</span>
               </td>
               <td>
-                <span>{salary.실수령액?.[0]}</span>
+                <span>{salary.실수령액?.[familyCountIndex]}</span>
               </td>
               <td>
-                <span>{salary.공제합계?.[0]}</span>
+                <span>{salary.공제합계?.[familyCountIndex]}</span>
               </td>
               <td>
                 <span>{salary.국민연금}</span>
@@ -86,10 +113,10 @@ export default function Salary2023({ salaries }: Props) {
                 <span>{salary.고용보험}</span>
               </td>
               <td>
-                <span>{salary.소득세?.[0]}</span>
+                <span>{salary.소득세?.[familyCountIndex]}</span>
               </td>
               <td>
-                <span>{salary.지방세?.[0]}</span>
+                <span>{salary.지방세?.[familyCountIndex]}</span>
               </td>
             </tr>
           ))}
