@@ -40,7 +40,10 @@ export class Salary {
     return new Intl.NumberFormat().format(number);
   }
   calculate(number: number, rate: number = 100) {
-    return Math.floor((number * rate) / 1000) * 10;
+    return this.truncate((number * rate) / 100, 10);
+  }
+  truncate(number: number, digit: number = 0) {
+    return Math.floor(number / digit) * digit;
   }
 
   get 연봉() {
@@ -50,7 +53,11 @@ export class Salary {
     return this.monthly;
   }
   get 국민연금() {
-    return this.calculate(this.monthly, this.RATE.국민연금);
+    const input = this.truncate(this.monthly, 1000); // 천단위 절사
+    const validInput =
+      input < 350_000 ? 350_000 : input > 5_530_000 ? 5_530_000 : input;
+
+    return this.calculate(validInput, this.RATE.국민연금);
   }
   get 건강보험() {
     return this.calculate(this.monthly, this.RATE.건강보험);
@@ -96,7 +103,7 @@ export class Salary {
     for (let i = 0; i < incomeTax.length - 1; i++) {
       const stdMonthly = (incomeTax[i][0] as number) * 1000;
       if (this.monthly < stdMonthly) {
-        return incomeTax[i + 1].slice(2).map((e) => this.calculate(e));
+        return incomeTax[i - 1].slice(2).map((e) => this.calculate(e));
       }
     }
     return [];

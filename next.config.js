@@ -8,7 +8,12 @@ const nextConfig = {
         source: '/',
         destination: '/salary',
         permanent: false
-      }
+      },
+      {
+        source: '/salary',
+        destination: '/salary/2023',
+        permanent: false
+      },
     ]
   }
 }
