@@ -1,5 +1,6 @@
 import React from "react";
 import { Inter } from "next/font/google";
+import ScrollToTopButton from "./ScrollToTopButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -8,6 +9,8 @@ interface Props {
 }
 
 export default function Layout({ children }: Props) {
+  const scrollToTop = () => window.scrollTo(0, 0);
+
   return (
     <>
       <header className="bg-gray-200 h-20 flex items-center shadow px-8">
@@ -18,6 +21,7 @@ export default function Layout({ children }: Props) {
       >
         {children}
       </main>
+      <ScrollToTopButton handleClick={scrollToTop} />
     </>
   );
 }
