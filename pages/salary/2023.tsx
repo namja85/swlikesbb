@@ -9,7 +9,9 @@ interface Props {
 export default function Salary2023({ salaries }: Props) {
   const [familyCount, setFamilyCount] = useState(1);
 
-  const changeFamilyCount: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const changeFamilyCount: React.ChangeEventHandler<HTMLSelectElement> = (
+    e
+  ) => {
     const value = Number(e.target.value);
     setFamilyCount(value);
   };
@@ -20,20 +22,16 @@ export default function Salary2023({ salaries }: Props) {
 
   return (
     <div className="p-8 bg-gray-200 shadow-lg rounded-md">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-end">
         <h1 className="text-3xl font-bold">2023 실수령액 💰</h1>
 
         <div className="space-x-2">
-          <label htmlFor="family-count">부양가족 (본인포함)</label>
-          <input
-            id="family-count"
-            className="pl-2 w-16"
-            type="number"
-            min={1}
-            max={11}
-            value={familyCount}
-            onChange={changeFamilyCount}
-          />
+          <label>부양가족 (본인포함)</label>
+          <select value={familyCount} onChange={changeFamilyCount}>
+            {Array.from({ length: 11 }, (_, i) => (
+              <option key={i}>{i + 1}</option>
+            ))}
+          </select>
         </div>
       </div>
 
