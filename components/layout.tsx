@@ -12,16 +12,16 @@ export default function Layout({ children }: Props) {
   const scrollToTop = () => window.scrollTo(0, 0);
 
   return (
-    <>
+    <div className="min-w-[1600px]">
       <header className="bg-gray-200 h-20 flex items-center shadow px-8">
         <h1 className="uppercase text-2xl font-bold">swlikesbb</h1>
       </header>
       <main
-        className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+        className={`flex flex-col items-center p-24 ${inter.className}`}
       >
         {children}
       </main>
       <ScrollToTopButton handleClick={scrollToTop} />
-    </>
+    </div>
   );
 }

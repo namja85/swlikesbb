@@ -35,7 +35,7 @@ export default function Salary2023({ salaries }: Props) {
         </div>
       </div>
 
-      <table className="mt-10">
+      <table className="mt-10 w-[1300px]">
         <colgroup>
           <col style={{ width: "120px", minWidth: "100px" }}></col>
           <col style={{ width: "120px", minWidth: "100px" }}></col>
