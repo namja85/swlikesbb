@@ -1,6 +1,7 @@
 import { getSalaries, Salary } from "@/lib/salary";
 import { GetStaticProps } from "next";
-import React, { useEffect, useMemo, useState } from "react";
+import Head from "next/head";
+import React, { useMemo, useState } from "react";
 
 interface Props {
   salaries: Salary[];
@@ -22,6 +23,26 @@ export default function Salary2023({ salaries }: Props) {
 
   return (
     <div className="p-8 bg-gray-200 shadow-lg rounded-md">
+      <Head>
+        <title>2023 실수령액</title>
+        <meta
+          name="description"
+          content="2023년도 실수령액 정보와 각 월소득 별 4대보험 예상공제액을 확인 할 수 있습니다."
+        />
+
+        <meta property="og:type" content="website"></meta>
+        <meta property="og:title" content="2023 실수령액"></meta>
+        <meta
+          property="og:description"
+          content="2023년도 실수령액을 확인 할 수 있습니다."
+        ></meta>
+        {/* <meta
+          property="og:image"
+          content="https://www.pnja.or.kr/icons/thumbnail.png"
+        ></meta>
+        <meta property="og:url" content="https://www.pnja.or.kr"></meta> */}
+      </Head>
+
       <div className="flex justify-between items-end">
         <h1 className="text-3xl font-bold">2023 실수령액 💰</h1>
 
