@@ -48,7 +48,7 @@ export default function Salary2023({ salaries }: Props) {
 
         <div className="space-x-2">
           <label>부양가족 (본인포함)</label>
-          <select value={familyCount} onChange={changeFamilyCount}>
+          <select className="focus:outline-none" value={familyCount} onChange={changeFamilyCount}>
             {Array.from({ length: 11 }, (_, i) => (
               <option key={i}>{i + 1}</option>
             ))}
