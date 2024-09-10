@@ -1,38 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 2023년도 실수령액 계산기
 
-## Getting Started
+- **배포 URL**: [https://swlikesbb.vercel.app](https://swlikesbb.vercel.app)
 
-First, run the development server:
+## 프로젝트 개요
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+이 프로젝트는 사용자가 2023년도 연봉 또는 월급에 대한 실수령액을 쉽게 계산할 수 있는 유용한 정보를 제공하는 도구를 개발하고자 시작되었습니다. 사용자가 간단한 계산을 통해 실수령액을 확인할 수 있도록 하여, 광고 수익을 창출할 가능성을 열어두고자 하였으나, 사용자 경험을 우선시하면서 광고는 최소화된 형태로 구성되었습니다. 결과적으로 사용자 중심의 정보 제공에 성공했지만, 기대했던 광고 수익 모델은 개선이 필요한 부분으로 남았습니다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 기술 스택 및 종속성
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### 1. **Next.js**
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- **Next.js v13**을 사용하여 파일 시스템 기반의 라우팅을 구현하였으며, 이를 통해 프로젝트의 페이지 구조를 직관적으로 구성하고 관리할 수 있었습니다.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### 2. **Tailwind CSS**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Tailwind CSS**를 활용하여 빠르고 효율적인 유틸리티 클래스 기반 스타일링을 구현하였습니다. 이를 통해 스타일링 작업의 복잡도를 줄이고, 전반적인 개발 속도를 높였습니다.
 
-## Learn More
+### 3. **xlsx**
 
-To learn more about Next.js, take a look at the following resources:
+- 2023년도 국가 간이소득세 엑셀 파일을 파싱하는 스크립트(`utils/parse-excel.js`)를 작성하여, 해당 데이터를 기반으로 세금 정보를 포함한 `lib/income-tax.json` 파일로 변환하였습니다. 이를 통해 세금 계산에 필요한 데이터를 효과적으로 처리할 수 있었습니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 주요 기능
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 1. **월 실수령액 계산**
 
-## Deploy on Vercel
+- 사용자의 월급에서 국민연금, 건강보험, 장기요양, 고용보험, 소득세, 지방세를 자동으로 계산하여 실제로 수령할 수 있는 월 실수령액을 제공하는 기능입니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 2. **부양가족 수 변경에 따른 세금 공제 계산**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 사용자가 부양가족 수(본인 포함)를 입력하면, 해당 수에 따라 세금 공제액이 자동으로 반영되어 정확한 실수령액을 제공합니다.
+
+## 핵심 로직
+
+- `lib/salary.ts` 파일에 정의된 클래스는 연봉에 따른 국민연금, 건강보험, 장기요양, 고용보험, 소득세, 지방세 등을 계산하는 로직을 포함하고 있습니다. 이 로직을 통해 각 사용자에 맞춘 세금 및 실수령액 계산이 가능합니다.
+
+## 배포
+
+- 이 프로젝트는 **Vercel**을 통해 배포되어 빠르고 안정적인 성능을 제공합니다.
+
+## 문제점 및 개선 필요사항
+
+### 1. **SEO 최적화 실패**
+
+- "2023년 실수령액"과 같은 핵심 키워드로 검색 시, 관련 페이지가 많아 검색 엔진 상위 노출에 실패했습니다. SEO 최적화가 부족한 상태이며, 이를 개선하기 위한 추가적인 전략이 필요합니다.
+
+### 2. **광고 연결 실패**
+
+- 예상된 트래픽이 발생하지 않아 광고 수익 창출에 실패했습니다. 또한, 광고 배치와 여백 구성이 비효율적이었음을 인지하고, 이를 개선할 필요가 있습니다.
